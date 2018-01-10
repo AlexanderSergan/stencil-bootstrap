@@ -26,7 +26,10 @@ export class StencilComponent {
     @Prop() addClassEven?: string = '';
     @Prop() addClassOdd?: string = '';
     @Prop() wrapperClass: string;
-    @Prop() bottomOffset?: number = 20;
+    @Prop() bottomOffset?: number = 100;
+
+    @Prop() debounce: number = 300;
+    debounceStatus: boolean = false
 
     @Prop() bindToList: boolean = false;
 
@@ -38,9 +41,27 @@ export class StencilComponent {
 
     regex = /\[\[+(.*?) ?\]\]+/g;
 
+    /**
+     * Method to dispatch HTMLCustomEvent 
+     * {@link https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events}
+     * If scb-list has id, this id will be dispatched as event.detail
+     * 
+     * @memberof StencilComponent
+     */
     @Method()
     loadMore() {
-        this.onBottomReach.emit({})
+        if (!this.debounceStatus) {
+            this.startDebounce()
+            this.onBottomReach.emit(this.el.id && this.el.id)
+        }
+    }
+
+    startDebounce(): void {
+        this.debounceStatus = true;
+
+        setTimeout(() =>
+            this.debounceStatus = false
+            , this.debounce)
     }
 
     componentWillLoad() {
@@ -57,7 +78,7 @@ export class StencilComponent {
     }
 
     windowScrollHandler() {
-        let last = document.querySelector('scb-list div:last-child')
+        let last = document.querySelector(`#${this.el.id} .list-item-last`)
 
         if (last.getBoundingClientRect().bottom - this.bottomOffset <= window.innerHeight)
             this.loadMore()
