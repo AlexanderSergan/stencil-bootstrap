@@ -11,6 +11,7 @@ export class ListPage {
 
     @State() users1: any[] = []
     @State() users2: any[] = []
+    @State() content: string
 
     @Listen('onBottomReach')
     customEventHandler(event) {
@@ -24,14 +25,21 @@ export class ListPage {
         }
 
     }
+    doc: string = 'scb-list.md'
 
     componentWillLoad() {
         this.initUsers1Data(20)
         this.initUsers2Data(20)
+        this.fetchMdContent()
     }
 
-
-
+    fetchMdContent() {
+        return fetch(`/docs-content/${this.doc}`)
+            .then(response => response.text())
+            .then(data =>
+                this.content = data
+            )
+    }
 
     initUsers1Data(count?: number) {
         this.getUsers(count).then(
@@ -116,12 +124,10 @@ export class ListPage {
 
             <div class="container">
 
-                <h2>Infinite list component</h2>
-                <h4 class="mt-4">API and usage are available <a href="https://github.com/AlexanderSergan/stencil-bootstrap/blob/develop/docs-md/scb-list.md">here</a></h4>
-                <br /><br />
+                <div class="mt-5 docs" innerHTML={this.content}></div>
+
 
                 <h4 class="mt-5">Boxed list of users with random data: </h4> <br />
-                {/* <div class='container'> */}
 
                 <scb-list id="users-boxed"
                     items={this.users2}
