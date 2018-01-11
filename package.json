@@ -11,7 +11,7 @@
     "dev": "sd concurrent \"gulp && stencil build --dev --watch\" \"stencil-dev-server\" ",
     "serve": "stencil-dev-server",
     "start": "npm run dev",
-    "heroku": "npm i && gulp && stencil build --dev && npm run serve --httpPort $PORT",
+    "heroku": "npm i && gulp && stencil build --dev && npm run node-server",
     "node-server": "node express-server.js"
   },
   "dependencies": {

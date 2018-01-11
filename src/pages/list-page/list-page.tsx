@@ -25,7 +25,7 @@ export class ListPage {
         }
 
     }
-    doc: string = 'scb-list.md.html'
+    doc: string = 'scb-list.md'
 
     componentWillLoad() {
         this.initUsers1Data(20)
