@@ -8,31 +8,30 @@ import '@stencil/router';
 
 
 import {
-  StencilComponent as CwcDropdown
-} from './components/cwc-dropdown/cwc-dropdown';
+  StencilComponent as DropdownPage
+} from './pages/dropdown-page/dropdown-page';
 
 declare global {
-  interface HTMLCwcDropdownElement extends CwcDropdown, HTMLElement {
+  interface HTMLDropdownPageElement extends DropdownPage, HTMLElement {
   }
-  var HTMLCwcDropdownElement: {
-    prototype: HTMLCwcDropdownElement;
-    new (): HTMLCwcDropdownElement;
+  var HTMLDropdownPageElement: {
+    prototype: HTMLDropdownPageElement;
+    new (): HTMLDropdownPageElement;
   };
   interface HTMLElementTagNameMap {
-    "cwc-dropdown": HTMLCwcDropdownElement;
+    "dropdown-page": HTMLDropdownPageElement;
   }
   interface ElementTagNameMap {
-    "cwc-dropdown": HTMLCwcDropdownElement;
+    "dropdown-page": HTMLDropdownPageElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      "cwc-dropdown": JSXElements.CwcDropdownAttributes;
+      "dropdown-page": JSXElements.DropdownPageAttributes;
     }
   }
   namespace JSXElements {
-    export interface CwcDropdownAttributes extends HTMLAttributes {
-      dropdownPlacement?: any;
-      triggerOverflow?: boolean;
+    export interface DropdownPageAttributes extends HTMLAttributes {
+      
     }
   }
 }
