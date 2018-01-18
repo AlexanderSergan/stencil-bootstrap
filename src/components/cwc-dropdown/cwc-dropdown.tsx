@@ -1,4 +1,4 @@
-import { Component, Prop, Element, HostElement, State, Method } from '@stencil/core';
+import { Component, Prop, Element, HostElement, State, Method, PropDidChange } from '@stencil/core';
 import Popper from 'popper.js';
 
 @Component({
@@ -8,14 +8,31 @@ import Popper from 'popper.js';
 export class StencilComponent {
 
     @Prop() dropdownPlacement: any = 'top-start';
-
     @Prop() triggerOverflow: boolean = true;
-    @Element() el: HostElement;
+    @Prop() offsetString: string = '';
+
     @State() openState: boolean = true;
 
-    popper: Popper
+    @Element() el: HostElement;
+
+    @State() popper: Popper
     btn: Element
     content: Element
+
+    componentWillUpdate() {
+        this.popper.scheduleUpdate()
+    }
+
+    @PropDidChange('dropdownPlacement')
+    placementDidChangeHandler(newValue) {
+        this.popper.options.placement = newValue
+    }
+    @PropDidChange('triggerOverflow')
+    overflowDidChangeHandler(newValue) {
+        this.popper.options.modifiers.offset.offset = newValue ?
+            '-10%r, -110%' :
+            ''
+    }
 
     componentDidLoad() {
         this.btn = this.el.children[0].children[0].children[0].children[0]
