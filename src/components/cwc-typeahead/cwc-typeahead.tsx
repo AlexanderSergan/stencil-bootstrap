@@ -1,4 +1,4 @@
-import { Component, State, Prop } from '@stencil/core';
+import { Component, State, Prop, Listen } from '@stencil/core';
 import filter from 'lodash/filter'
 
 
@@ -9,12 +9,23 @@ import filter from 'lodash/filter'
 export class CwcTypeahead {
 
     @Prop() minSearchLength: number = 1;
-    @Prop() data: any[] = ['Alex', 'Alabama', 'andreas', 'alexandro']
+    @Prop() data: any[] = ['Alex', 'Alabama', 'Alaska', 'andreas', 'alexandro']
 
     @State() filterValue: string = '';
     @State() optionsShown: boolean = false;
+    @State() focusIndex: number = 0
 
     filtered: any[] = []
+
+    componentWillUpdate() {
+
+        if (this.filterValue.length >= this.minSearchLength) {
+            this.filtered = this.filter()
+
+            if (this.filtered.length > 0)
+                this.optionsShown = true
+        }
+    }
 
     filter() {
         return filter(this.data, (city) =>
@@ -27,36 +38,78 @@ export class CwcTypeahead {
         this.filterValue = e.target.value
     }
 
-    handleSelect(e) {
-        let input: HTMLInputElement = document.querySelector('input#input')
+    handleSelect(value) {
+        debugger
+        let input: HTMLInputElement = document.querySelector('#typeahead input')
+        input.value = value
+        this.close()
+    }
 
-        input.value = e.target.value
+    close() {
+        this.focusIndex = 0
         this.filterValue = ''
+        this.filtered = []
+    }
+
+
+
+    @Listen('keydown.down')
+    handleDownArrow(ev) {
+
+        if (this.focusIndex < this.filtered.length) {
+            this.focusIndex = this.focusIndex + 1
+        }
+    }
+    @Listen('keydown.up')
+    handleUpArrow(ev) {
+        if (this.focusIndex > 0) {
+            this.focusIndex = this.focusIndex - 1
+            ev.preventDefault()
+
+        }
+    }
+
+    @Listen('keydown.escape')
+    handleEscape(ev) {
+        if (this.focusIndex > 0) {
+            this.focusIndex = 0
+        }
+        this.close()
+    }
+
+    @Listen('keydown.enter')
+    handleEnter(ev) {
+        if (this.focusIndex > 0) {
+            this.handleSelect(document.querySelectorAll('#typeahead option')[this.focusIndex - 1].textContent)
+        }
     }
 
 
     render() {
-        this.filtered = this.filter()
-        if (this.filterValue.length >= this.minSearchLength && this.filtered.length > 0) {
-            return (
-                <div>
-                    <input id="input" onInput={(e) => this.handleChange(e)}
-                        type="text" class="form-control" />
-                    <div class="card">
-                        {
-                            this.filtered && this.filtered.map(val =>
-                                <option class="dropdown-item" onClick={(e) => this.handleSelect(e)}> {val} </option>)
-                        }
-                    </div>
-                </div>
-            )
-        } else {
-            return (
-                <div>
-                    <input id="input" onInput={(e) => this.handleChange(e)}
-                        type="text" class="form-control" placeholder="Search something" />
-                </div>
-            )
-        }
+
+        return (
+            <div id="typeahead">
+                <input onInput={(e) => this.handleChange(e)}
+                    type="text" class="form-control" placeholder="Search something e.g. 'Alabama'" />
+
+                {(() => {
+                    if (this.filtered.length > 0) {
+                        return (
+                            <div class="card">
+                                {
+                                    this.filtered.map((val, i) =>
+                                        <option class={"dropdown-item".concat((this.focusIndex == i + 1) ? ' active' : '')}
+                                            onClick={(e: any) => this.handleSelect(e.target.value)}>{val}</option>)
+                                }
+                            </div>
+
+                        )
+
+                    }
+                })()}
+
+            </div>
+        )
+
     }
 }
