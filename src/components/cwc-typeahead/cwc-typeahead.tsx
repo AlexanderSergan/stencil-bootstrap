@@ -10,6 +10,7 @@ export class CwcTypeahead {
 
     @Prop() minSearchLength: number = 1;
     @Prop() data: any[] = ['Alex', 'Alabama', 'Alaska', 'andreas', 'alexandro']
+    @Prop() idValue: string = 'typeahead-' + Date.now();
 
     @State() filterValue: string = '';
     @State() optionsShown: boolean = false;
@@ -40,7 +41,7 @@ export class CwcTypeahead {
 
     handleSelect(value) {
         debugger
-        let input: HTMLInputElement = document.querySelector('#typeahead input')
+        let input: HTMLInputElement = document.querySelector(`#${this.idValue} input`)
         input.value = value
         this.close()
     }
@@ -80,7 +81,7 @@ export class CwcTypeahead {
     @Listen('keydown.enter')
     handleEnter(ev) {
         if (this.focusIndex > 0) {
-            this.handleSelect(document.querySelectorAll('#typeahead option')[this.focusIndex - 1].textContent)
+            this.handleSelect(document.querySelectorAll(`#${this.idValue} option`)[this.focusIndex - 1].textContent)
         }
     }
 
@@ -88,7 +89,7 @@ export class CwcTypeahead {
     render() {
 
         return (
-            <div id="typeahead">
+            <div id={this.idValue}>
                 <input onInput={(e) => this.handleChange(e)}
                     type="text" class="form-control" placeholder="Search something e.g. 'Alabama'" />
 

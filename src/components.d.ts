@@ -32,6 +32,7 @@ declare global {
   namespace JSXElements {
     export interface CwcTypeaheadAttributes extends HTMLAttributes {
       data?: any[];
+      idValue?: string;
       minSearchLength?: number;
     }
   }
