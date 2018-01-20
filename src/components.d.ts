@@ -34,6 +34,7 @@ declare global {
       data?: any[];
       idValue?: string;
       minSearchLength?: number;
+      searchKey?: string;
     }
   }
 }
