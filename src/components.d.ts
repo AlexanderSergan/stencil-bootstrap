@@ -8,32 +8,33 @@ import '@stencil/router';
 
 
 import {
-  StencilComponent as CwcDropdown
-} from './components/cwc-dropdown/cwc-dropdown';
+  CwcTypeahead as CwcTypeahead
+} from './components/cwc-typeahead/cwc-typeahead';
 
 declare global {
-  interface HTMLCwcDropdownElement extends CwcDropdown, HTMLElement {
+  interface HTMLCwcTypeaheadElement extends CwcTypeahead, HTMLElement {
   }
-  var HTMLCwcDropdownElement: {
-    prototype: HTMLCwcDropdownElement;
-    new (): HTMLCwcDropdownElement;
+  var HTMLCwcTypeaheadElement: {
+    prototype: HTMLCwcTypeaheadElement;
+    new (): HTMLCwcTypeaheadElement;
   };
   interface HTMLElementTagNameMap {
-    "cwc-dropdown": HTMLCwcDropdownElement;
+    "cwc-typeahead": HTMLCwcTypeaheadElement;
   }
   interface ElementTagNameMap {
-    "cwc-dropdown": HTMLCwcDropdownElement;
+    "cwc-typeahead": HTMLCwcTypeaheadElement;
   }
   namespace JSX {
     interface IntrinsicElements {
-      "cwc-dropdown": JSXElements.CwcDropdownAttributes;
+      "cwc-typeahead": JSXElements.CwcTypeaheadAttributes;
     }
   }
   namespace JSXElements {
-    export interface CwcDropdownAttributes extends HTMLAttributes {
-      dropdownPlacement?: any;
-      offsetString?: string;
-      triggerOverflow?: boolean;
+    export interface CwcTypeaheadAttributes extends HTMLAttributes {
+      data?: any[];
+      idValue?: string;
+      minSearchLength?: number;
+      searchKey?: string;
     }
   }
 }

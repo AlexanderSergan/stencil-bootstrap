@@ -72,6 +72,16 @@ export class StencilBootstrapDemo {
                   Dropdown
                 </stencil-route-link>
               </li>
+              <li>
+                <stencil-route-link
+                  url="/typeahead"
+                  urlMatch={['/typeahead']}
+                  activeClass="active"
+                  exact={true}
+                >
+                  Typeahead
+                </stencil-route-link>
+              </li>
             </ul>
           </div>
 
@@ -104,6 +114,12 @@ export class StencilBootstrapDemo {
               <stencil-route
                 url={['/dropdown']}
                 component="dropdown-page"
+                exact={true}
+              >
+              </stencil-route>
+              <stencil-route
+                url={['/typeahead']}
+                component="typeahead-page"
                 exact={true}
               >
               </stencil-route>
